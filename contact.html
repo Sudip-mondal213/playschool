@@ -34,7 +34,7 @@
       margin-bottom: 20px;
     }
 
-    .email {
+    .phone {
       font-size: 28px;
       color: #333;
       background-color: #fff;
@@ -86,16 +86,23 @@
     }
 
     .back-btn {
-      margin-top: 30px;
-      padding: 12px 24px;
-      font-size: 18px;
-      background-color: #ff8c00;
-      color: white;
-      text-decoration: none;
-      border-radius: 10px;
-      box-shadow: 2px 2px 5px rgba(0,0,0,0.25);
-      transition: background-color 0.3s;
-    }
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  padding: 12px 24px;
+  font-size: 18px;
+  background-color: #ff8c00;
+  color: white;
+  text-decoration: none;
+  border-radius: 10px;
+  box-shadow: 2px 2px 5px rgba(0,0,0,0.25);
+  transition: background-color 0.3s;
+  z-index: 10;
+}
+
+.back-btn:hover {
+  background-color: #ff6600;
+}
 
     .back-btn:hover {
       background-color: #ff6600;
@@ -107,11 +114,11 @@
   <div class="container">
     
 
-    <h1>Contact Us (sudip mondal) </h1>
+    <h1>Contact Us</h1>
     <div class="photo-box">
       <img src="myphoto.jpg" alt="My Photo" />
     </div>
-    <div class="email"> email: msudip.mondal213@gmail.com</div>
+    <div class="phone"> Phone: 894401xx26</div>
 
     <div class="feedback">
       <h2>Did you like our website?</h2>
