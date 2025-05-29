@@ -1,0 +1,41 @@
+body {
+  font-family: Arial, sans-serif;
+  background-image: url('images/playschool.jpeg'); /* adjust path if needed */
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  margin: 0;
+  padding: 20px;
+  text-align: center;
+}
+
+h1 {
+  font-size: 36px;
+  color: #ee0741;
+  margin-bottom: 20px;
+}
+
+.tab-buttons {
+  display: inline-block;
+  background-color: #ffeb3b;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+
+.tab-btn {
+  display: block;
+  margin: 15px 0;
+  padding: 16px 30px;
+  background-color: #f0c040;
+  color: #000;
+  font-size: 20px;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: bold;
+  box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+}
+
+.tab-btn:hover {
+  background-color: #ffa500;
+}

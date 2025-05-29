@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Alphabet Display</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    body {
+      font-family: 'Arial Rounded MT Bold', Arial, sans-serif;
+      background: #fff8dc;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+      user-select: none;
+    }
+    .container {
+      background-color: #fff3cd;
+      border: 3px solid #ffdd99;
+      padding: 30px 50px;
+      border-radius: 20px;
+      box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+      max-width: 400px;
+      width: 100%;
+    }
+    .letter {
+      font-size: 100px;
+      font-weight: 900;
+      color: #ff8c00;
+      margin: 0 0 10px 0;
+    }
+    .word {
+      font-size: 32px;
+      font-weight: 700;
+      color: #d2691e;
+      margin-bottom: 10px;
+      text-transform: capitalize;
+    }
+    img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 20px;
+      border: 3px solid #ffa500;
+      box-shadow: 0 0 15px rgba(255, 140, 0, 0.6);
+      margin-bottom: 20px;
+    }
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+    }
+    button {
+      flex: 1;
+      padding: 15px 0;
+      font-size: 20px;
+      font-weight: 700;
+      color: white;
+      background-color: #ff8c00;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 2px 2px 8px rgba(255, 140, 0, 0.7);
+      transition: background-color 0.3s, transform 0.2s;
+      user-select: none;
+    }
+    button:hover {
+      background-color: #ff6700;
+      transform: scale(1.05);
+    }
+    .back-btn {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background-color: #ff7f50;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-size: 18px;
+      font-weight: bold;
+      text-decoration: none;
+      box-shadow: 2px 2px 5px rgba(0,0,0,0.25);
+      transition: background-color 0.3s;
+    }
+    .back-btn:hover {
+      background-color: #ff6333;
+    }
+  </style>
+</head>
+<body>
+  <a href="index.html" class="back-btn"> ⮜ Back To Home</a>
+
+  <div class="container">
+    <div class="letter" id="letter">A</div>
+    <div class="word" id="word">a for apple</div>
+    <img id="image" src="images/apple.jpg" alt="Apple" />
+
+    <div class="buttons">
+      <button id="prevBtn">Previous</button>
+      <button id="nextBtn">Next</button>
+    </div>
+  </div>
+
+  <script>
+    const alphabetData = [
+      { letter: 'A', word: 'apple', img: 'images/apple.jpeg' },
+      { letter: 'B', word: 'ball', img: 'images/ball.jpeg' },
+      { letter: 'C', word: 'cat', img: 'images/cat.jpeg' },
+      { letter: 'D', word: 'dog', img: 'images/dog.jpeg' },
+      { letter: 'E', word: 'elephant', img: 'images/elephant.jpeg' },
+      { letter: 'F', word: 'fish', img: 'images/fish.jpeg' },
+      { letter: 'G', word: 'grape', img: 'images/grape.jpeg' },
+      { letter: 'H', word: 'hat', img: 'images/hat.jpeg' },
+      { letter: 'I', word: 'ice cream', img: 'images/icecream.jpeg' },
+      { letter: 'J', word: 'jellyfish', img: 'images/jellyfish.jpeg' },
+      { letter: 'K', word: 'kite', img: 'images/kite.jpeg' },
+      { letter: 'L', word: 'lion', img: 'images/lion.jpeg' },
+      { letter: 'M', word: 'monkey', img: 'images/monkey.jpeg' },
+      { letter: 'N', word: 'nest', img: 'images/nest.jpeg' },
+      { letter: 'O', word: 'orange', img: 'images/orange.jpeg' },
+      { letter: 'P', word: 'parrot', img: 'images/parrot.jpeg' },
+      { letter: 'Q', word: 'queen', img: 'images/queen.jpeg' },
+      { letter: 'R', word: 'rabbit', img: 'images/rabbit.jpeg' },
+      { letter: 'S', word: 'sun', img: 'images/sun.jpeg' },
+      { letter: 'T', word: 'tiger', img: 'images/tiger.jpeg' },
+      { letter: 'U', word: 'umbrella', img: 'images/umbrella.jpeg' },
+      { letter: 'V', word: 'violin', img: 'images/violin.jpeg' },
+      { letter: 'W', word: 'watch', img: 'images/watch.jpeg' },
+      { letter: 'X', word: 'xylophone', img: 'images/xylophone.jpeg' },
+      { letter: 'Y', word: 'yak', img: 'images/yak.jpeg' },
+      { letter: 'Z', word: 'zebra', img: 'images/zebra.jpeg' },
+    ];
+
+    let currentIndex = 0;
+
+    const letterElem = document.getElementById('letter');
+    const wordElem = document.getElementById('word');
+    const imageElem = document.getElementById('image');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+
+    function updateDisplay() {
+      const current = alphabetData[currentIndex];
+      letterElem.textContent = current.letter;
+      wordElem.textContent = `${current.letter.toLowerCase()} for ${current.word}`;
+      imageElem.src = current.img;
+      imageElem.alt = current.word;
+    }
+
+    prevBtn.addEventListener('click', () => {
+      currentIndex--;
+      if (currentIndex < 0) currentIndex = alphabetData.length - 1;
+      updateDisplay();
+    });
+
+    nextBtn.addEventListener('click', () => {
+      currentIndex++;
+      if (currentIndex >= alphabetData.length) currentIndex = 0;
+      updateDisplay();
+    });
+
+    // Initialize
+    updateDisplay();
+  </script>
+</body>
+</html>

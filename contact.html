@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Contact Us</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    body {
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background-color: #fef8e7;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      text-align: center;
+    }
+
+    .container {
+      background-color: #fff3cd;
+      border: 3px solid #ffe699;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      max-width: 90%;
+    }
+
+    h1 {
+      color: #ff9900;
+      font-size: 36px;
+      margin-bottom: 20px;
+    }
+
+    .email {
+      font-size: 28px;
+      color: #333;
+      background-color: #fff;
+      border: 2px dashed #ffcc00;
+      padding: 10px 20px;
+      border-radius: 12px;
+      display: inline-block;
+      margin-bottom: 30px;
+    }
+
+    .feedback {
+      margin-top: 30px;
+    }
+
+    .feedback h2 {
+      font-size: 24px;
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .feedback-btn {
+      font-size: 24px;
+      padding: 15px 30px;
+      margin: 10px;
+      border: none;
+      border-radius: 15px;
+      cursor: pointer;
+      color: white;
+      transition: transform 0.2s;
+    }
+
+    .feedback-btn.good {
+      background-color: #4caf50;
+    }
+
+    .feedback-btn.bad {
+      background-color: #f44336;
+    }
+
+    .feedback-btn:hover {
+      transform: scale(1.1);
+    }
+
+    .thank-you {
+      margin-top: 20px;
+      font-size: 20px;
+      font-weight: bold;
+      color: #006400;
+    }
+
+    .back-btn {
+      margin-top: 30px;
+      padding: 12px 24px;
+      font-size: 18px;
+      background-color: #ff8c00;
+      color: white;
+      text-decoration: none;
+      border-radius: 10px;
+      box-shadow: 2px 2px 5px rgba(0,0,0,0.25);
+      transition: background-color 0.3s;
+    }
+
+    .back-btn:hover {
+      background-color: #ff6600;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    
+
+    <h1>Contact Us (sudip mondal) </h1>
+    <div class="photo-box">
+      <img src="myphoto.jpg" alt="My Photo" />
+    </div>
+    <div class="email"> email: msudip.mondal213@gmail.com</div>
+
+    <div class="feedback">
+      <h2>Did you like our website?</h2>
+      <button class="feedback-btn good" onclick="showMessage('Thank you!')"> Good</button>
+      <button class="feedback-btn bad" onclick="showMessage('Thank you for your feedback! ')"> Bad</button>
+      <div class="thank-you" id="thankYouMsg"></div>
+    </div>
+
+    <a href="index.html" class="back-btn">⮜ Back To Home</a>
+  </div>
+
+  <script>
+    function showMessage(message) {
+      document.getElementById('thankYouMsg').textContent = message;
+    }
+  </script>
+
+</body>
+</html>

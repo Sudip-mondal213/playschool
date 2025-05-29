@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Fill the Alphabet Game</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    body {
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background-image: url('/images/fruit.jpeg'); /* replace with your background */
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      padding: 20px;
+      text-align: center;
+      position: relative;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(255, 240, 200, 0.288);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .back-btn {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background-color: #ff7f50;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-size: 18px;
+      font-weight: bold;
+      text-decoration: none;
+      box-shadow: 2px 2px 5px rgba(0,0,0,0.25);
+      z-index: 1;
+      transition: background-color 0.3s;
+    }
+    .back-btn:hover {
+      background-color: #ff6333;
+    }
+
+    h1 {
+      font-size: 3rem;
+      color: #ff6347;
+      margin-top: 60px;
+      margin-bottom: 30px;
+      text-shadow: 2px 2px 5px #ffa07a;
+      position: relative;
+      z-index: 1;
+    }
+
+    .box {
+      background-color: #fff8dc;
+      border: 3px solid #ffdab9;
+      padding: 25px;
+      margin: 20px auto;
+      width: fit-content;
+      border-radius: 15px;
+      box-shadow: 0 0 15px rgba(255, 160, 122, 0.6);
+      position: relative;
+      z-index: 1;
+    }
+
+    .word {
+      font-size: 3rem;
+      font-weight: 700;
+      color: #d2691e;
+      letter-spacing: 20px;
+      user-select: none;
+    }
+
+    .options {
+      margin-top: 30px;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      z-index: 1;
+    }
+
+    .option-btn {
+      padding: 15px 30px;
+      background-color: #ffd700;
+      font-size: 2rem;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 700;
+      box-shadow: 2px 2px 7px rgba(255, 215, 0, 0.7);
+      transition: background-color 0.3s, transform 0.2s;
+      user-select: none;
+    }
+    .option-btn:hover {
+      background-color: #ffec8b;
+      transform: scale(1.1);
+    }
+    .option-btn.correct {
+      background-color: #32cd32 !important;
+      color: white;
+      box-shadow: 2px 2px 10px #228b22;
+      transform: scale(1.1);
+    }
+
+    .result-box {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-top: 25px;
+      min-height: 2.5rem;
+      color: #014c92e8;
+      position: relative;
+      z-index: 1;
+    }
+    .result-box.correct {
+      color: #228b22;
+    }
+
+    .new-question {
+      margin-top: 30px;
+      padding: 12px 28px;
+      font-size: 20px;
+      background-color: #2196f3;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 2px 2px 8px rgba(33, 150, 243, 0.7);
+      transition: background-color 0.3s;
+      user-select: none;
+      z-index: 1;
+    }
+    .new-question:hover {
+      background-color: #1769aa;
+    }
+  </style>
+</head>
+<body>
+  <a href="index.html" class="back-btn">🔙 Back</a>
+  <h1>Fill the Alphabet</h1>
+
+  <div class="box">
+    <div class="word" id="word">A_PLE</div>
+  </div>
+
+  <div class="options" id="options"></div>
+
+  <div class="result-box" id="result">Choose the correct letter</div>
+
+  <button class="new-question" id="newQuestionBtn">New Question</button>
+
+  <script>
+    // Array of words with one missing letter per word:
+    // word: full word string
+    // missingIndex: index of missing letter
+    // options: array of letter options including correct letter
+    const questions = [
+      { word: "APPLE", missingIndex: 1, options: ['A', 'B', 'P', 'C'] },   // A_PLE, missing 2nd letter P
+      { word: "BANANA", missingIndex: 3, options: ['N', 'M', 'A', 'B'] },  // BAN_NA
+      { word: "ORANGE", missingIndex: 4, options: ['G', 'K', 'R', 'O'] },  // ORAN_E
+      { word: "MANGO", missingIndex: 2, options: ['N', 'M', 'G', 'O'] },   // MA_GO
+      { word: "PEACH", missingIndex: 1, options: ['E', 'A', 'P', 'O'] }    // P_ACH
+    ];
+
+    let currentQuestion = null;
+    const wordElem = document.getElementById('word');
+    const optionsElem = document.getElementById('options');
+    const resultElem = document.getElementById('result');
+    const newQuestionBtn = document.getElementById('newQuestionBtn');
+
+    function getRandomQuestion() {
+      return questions[Math.floor(Math.random() * questions.length)];
+    }
+
+    function renderWordWithBlank(word, blankIndex) {
+      let display = '';
+      for(let i = 0; i < word.length; i++) {
+        display += (i === blankIndex) ? '_' : word[i];
+      }
+      // Add spaces for better readability
+      return display.split('').join(' ');
+    }
+
+    function resetGame() {
+      resultElem.textContent = "Choose the correct letter";
+      resultElem.classList.remove('correct');
+      optionsElem.innerHTML = '';
+      currentQuestion = getRandomQuestion();
+
+      wordElem.textContent = renderWordWithBlank(currentQuestion.word, currentQuestion.missingIndex);
+
+      currentQuestion.options.forEach(letter => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.textContent = letter;
+        btn.disabled = false;
+        btn.onclick = () => checkAnswer(letter, btn);
+        optionsElem.appendChild(btn);
+      });
+    }
+
+    function checkAnswer(selectedLetter, btn) {
+      if (selectedLetter === currentQuestion.word[currentQuestion.missingIndex]) {
+        btn.classList.add('correct');
+        // Replace blank with letter
+        let displayed = wordElem.textContent.split(' ');
+        displayed[currentQuestion.missingIndex] = selectedLetter;
+        wordElem.textContent = displayed.join(' ');
+        resultElem.textContent = " Right!";
+        resultElem.classList.add('correct');
+        disableOptions();
+      } else {
+        resultElem.textContent = ` Not Correct! The correct letter is "${currentQuestion.word[currentQuestion.missingIndex]}"`;
+        resultElem.classList.remove('correct');
+      }
+    }
+
+    function disableOptions() {
+      const buttons = optionsElem.querySelectorAll('button');
+      buttons.forEach(btn => btn.disabled = true);
+    }
+
+    newQuestionBtn.onclick = resetGame;
+
+    window.onload = resetGame;
+  </script>
+</body>
+</html>

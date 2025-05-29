@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Basic Math Game</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    body {
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background-image: url('/images/math.jpeg'); /* Replace with your image filename */
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      padding: 20px;
+      text-align: center;
+      /* Add a subtle pastel overlay on background image */
+      position: relative;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(255, 240, 200, 0.7); /* soft cream pastel overlay */
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .back-btn {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background-color: #ff7f50; /* coral */
+      color: white;
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-size: 18px;
+      font-weight: bold;
+      text-decoration: none;
+      box-shadow: 2px 2px 5px rgba(0,0,0,0.25);
+      z-index: 1;
+      transition: background-color 0.3s;
+    }
+    .back-btn:hover {
+      background-color: #ff6333;
+    }
+
+    h1 {
+      font-size: 3.5rem;
+      color: #ff6347; /* tomato red */
+      margin-top: 60px;
+      margin-bottom: 30px;
+      text-shadow: 2px 2px 5px #ffa07a;
+      z-index: 1;
+      position: relative;
+    }
+
+    .box {
+      background-color: #fff8dc; /* cornsilk */
+      border: 3px solid #ffdab9; /* peach puff */
+      padding: 25px;
+      margin: 20px auto;
+      width: fit-content;
+      border-radius: 15px;
+      box-shadow: 0 0 15px rgba(255, 160, 122, 0.6);
+      position: relative;
+      z-index: 1;
+    }
+
+    .question {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #d2691e; /* chocolate */
+    }
+
+    .options {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .option-btn {
+      padding: 15px 30px;
+      background-color: #ffd700; /* gold */
+      font-size: 1.5rem;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 600;
+      box-shadow: 2px 2px 7px rgba(255, 215, 0, 0.7);
+      transition: background-color 0.3s, transform 0.2s;
+    }
+    .option-btn:hover {
+      background-color: #ffec8b;
+      transform: scale(1.1);
+    }
+    .option-btn.correct {
+      background-color: #32cd32 !important; /* lime green */
+      color: white;
+      box-shadow: 2px 2px 10px #228b22;
+      transform: scale(1.1);
+    }
+
+    .new-question {
+      margin-top: 30px;
+      padding: 15px 30px;
+      font-size: 1.8rem;
+      background-color: #1e90ff; /* dodger blue */
+      color: white;
+      border: none;
+      border-radius: 15px;
+      cursor: pointer;
+      font-weight: 700;
+      box-shadow: 2px 2px 8px rgba(30, 144, 255, 0.7);
+      transition: background-color 0.3s, transform 0.2s;
+      position: relative;
+      z-index: 1;
+    }
+    .new-question:hover {
+      background-color: #104e8b;
+      transform: scale(1.05);
+    }
+
+    .result-box {
+      font-size: 1.8rem;
+      color: #8b0000; /* dark red for wrong */
+      font-weight: 700;
+      margin-top: 25px;
+      min-height: 2.5rem;
+      position: relative;
+      z-index: 1;
+    }
+    .result-box.correct {
+      color: #228b22; /* forest green */
+    }
+  </style>
+</head>
+<body>
+  <a href="index.html" class="back-btn"> ⮜ Back To Home</a>
+  <h1>Basic Math Game</h1>
+
+  <div class="box">
+    <div class="question" id="question">5 + 3 = ?</div>
+  </div>
+
+  <div class="box">
+    <div class="options" id="options"></div>
+  </div>
+
+  <div class="box result-box" id="result">Choose the correct answer</div>
+
+  <button class="new-question" onclick="generateQuestion()">New Question</button>
+
+  <script>
+    let currentAnswer = null;
+
+    function getRandomInt(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function generateQuestion() {
+      const num1 = getRandomInt(1, 10);
+      const num2 = getRandomInt(1, 10);
+      const isAddition = Math.random() < 0.5;
+      currentAnswer = isAddition ? num1 + num2 : num1 - num2;
+      const operator = isAddition ? '+' : '-';
+
+      document.getElementById('question').textContent = `${num1} ${operator} ${num2} = ?`;
+
+      const optionsContainer = document.getElementById('options');
+      const resultBox = document.getElementById('result');
+      resultBox.textContent = "Choose the correct answer";
+      resultBox.classList.remove('correct');
+      optionsContainer.innerHTML = '';
+
+      const answers = new Set([currentAnswer]);
+      while (answers.size < 4) {
+        let randomOption = getRandomInt(currentAnswer - 3, currentAnswer + 3);
+        if(randomOption !== currentAnswer && randomOption >= 0) {
+          answers.add(randomOption);
+        }
+      }
+
+      Array.from(answers).sort(() => Math.random() - 0.5).forEach(answer => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.textContent = answer;
+        btn.onclick = () => {
+          if (answer === currentAnswer) {
+            btn.classList.add('correct');
+            resultBox.textContent = ' Right!';
+            resultBox.classList.add('correct');
+          } else {
+            resultBox.textContent = ` Not Correct! The correct answer is ${currentAnswer}`;
+            resultBox.classList.remove('correct');
+          }
+        };
+        optionsContainer.appendChild(btn);
+      });
+    }
+
+    window.onload = generateQuestion;
+  </script>
+</body>
+</html>
