@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tower of Hanoi</title>
+  <style>
+    body {
+      font-family: 'Comic Sans MS', cursive;
+      background-color: #f5f5dc;
+      background-image: url('images/bg.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+    }
+    .header-box {
+      background: #ffe4b5;
+      border: 2px solid #ffa500;
+      border-radius: 12px;
+      padding: 10px;
+      margin: 20px auto;
+      max-width: 400px;
+    }
+    h1 {
+      color: #ff6347;
+      margin: 0;
+    }
+    .game-container {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin-top: 30px;
+    }
+    .tower {
+      width: 120px;
+      height: 250px;
+      background-color: #eee;
+      border: 2px solid #bbb;
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column-reverse;
+      align-items: center;
+      padding: 10px;
+    }
+    .disk {
+      height: 20px;
+      margin: 3px 0;
+      border-radius: 5px;
+      color: white;
+    }
+    .disk1 { width: 50px; background-color: #ff6666; }
+    .disk2 { width: 70px; background-color: #66b3ff; }
+    .disk3 { width: 90px; background-color: #99ff99; }
+    .disk4 { width: 110px; background-color: #ffa07a; }
+    .disk5 { width: 130px; background-color: #dda0dd; }
+    .back-btn {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      padding: 10px 20px;
+      background-color: #4caf50;
+      color: white;
+      border-radius: 10px;
+      text-decoration: none;
+    }
+    .message {
+      margin-top: 20px;
+      font-size: 24px;
+      font-weight: bold;
+      color: green;
+    }
+  </style>
+</head>
+<body>
+  <a class="back-btn" href="index.html">🔙 Back</a>
+
+  <div class="header-box">
+    <h1>Tower of Hanoi</h1>
+  </div>
+
+  <div class="game-container">
+    <div class="tower" id="tower1"></div>
+    <div class="tower" id="tower2"></div>
+    <div class="tower" id="tower3"></div>
+  </div>
+
+  <div class="message" id="successMsg"></div>
+
+  <script>
+    const towers = document.querySelectorAll('.tower');
+    let selectedDisk = null;
+
+    const diskClasses = ['disk1', 'disk2', 'disk3', 'disk4', 'disk5'];
+    const disks = diskClasses.map(createDisk);
+    shuffle(disks);
+    disks.forEach(disk => document.getElementById('tower1').appendChild(disk));
+
+    function createDisk(className) {
+      const disk = document.createElement('div');
+      disk.className = `disk ${className}`;
+      return disk;
+    }
+
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+
+    towers.forEach(tower => {
+      tower.addEventListener('click', () => {
+        const topDisk = tower.lastElementChild;
+
+        if (selectedDisk === null && topDisk) {
+          selectedDisk = topDisk;
+          topDisk.style.border = '3px solid red';
+        } else if (selectedDisk) {
+          const lastDisk = tower.lastElementChild;
+          const selectedWidth = parseInt(window.getComputedStyle(selectedDisk).width);
+          const lastWidth = lastDisk ? parseInt(window.getComputedStyle(lastDisk).width) : Infinity;
+
+          if (selectedWidth < lastWidth) {
+            selectedDisk.style.border = 'none';
+            tower.appendChild(selectedDisk);
+            selectedDisk = null;
+            checkWin();
+          } else {
+            alert('🚫 Cannot place larger disk on smaller one!');
+          }
+        }
+      });
+    });
+
+    function checkWin() {
+      const tower3 = document.getElementById('tower3');
+      if (tower3.children.length === diskClasses.length) {
+        document.getElementById('successMsg').textContent = '🎉 Congratulations! You solved it!';
+      }
+    }
+  </script>
+</body>
+</html>

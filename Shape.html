@@ -1,0 +1,149 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shape Game</title>
+  <style>
+    body {
+      font-family: 'Comic Sans MS', cursive;
+      background-color: #f0f8ff;
+      background-image: url('images/shape.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      min-height: 100vh;
+      margin: 0;
+      text-align: center;
+      padding: 20px;
+    }
+    .header-box {
+      background: #ffe4b5;
+      border: 2px solid #ffa500;
+      border-radius: 12px;
+      padding: 10px;
+      margin: 20px auto 10px;
+      max-width: 400px;
+    }
+    h1 {
+      color: #ff6347;
+      margin: 0;
+    }
+    .back-btn {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      padding: 10px 20px;
+      background-color: #4caf50;
+      color: white;
+      border-radius: 10px;
+      text-decoration: none;
+    }
+    .box {
+      background: #fff3cd;
+      border: 2px solid #ffd;
+      border-radius: 12px;
+      padding: 20px;
+      margin: 20px auto;
+      max-width: 400px;
+    }
+    .shape-img {
+      width: 150px;
+      height: 150px;
+      margin: 10px auto;
+    }
+    .options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+    .option-btn {
+      padding: 15px;
+      font-size: 18px;
+      border: none;
+      border-radius: 10px;
+      background-color: #87cefa;
+      cursor: pointer;
+    }
+    .option-btn:hover {
+      background-color: #00bfff;
+    }
+    .correct {
+      background-color: #4caf50 !important;
+      color: white;
+    }
+    .result {
+      font-size: 22px;
+      font-weight: bold;
+      margin-top: 15px;
+    }
+    .new-shape-btn {
+      margin-top: 20px;
+      padding: 18px 36px;
+      font-size: 22px;
+      background-color: #ff69b4;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .new-shape-btn:hover {
+      background-color: #ff1493;
+    }
+  </style>
+</head>
+<body>
+  <a class="back-btn" href="index.html">⮜ Back To Home</a>
+  <div class="header-box">
+    <h1>Shape Recognition Game</h1>
+  </div>
+
+  <div class="box">
+    <img src="" alt="Shape" class="shape-img" id="shapeImg">
+    <div class="options" id="shapeOptions"></div>
+    <div class="result" id="shapeResult"></div>
+    <button class="new-shape-btn" onclick="loadShape()">New Shape</button>
+  </div>
+
+  <script>
+   const shapeData = [
+      { img: 'images/circle.png', answer: 'Circle', options: ['Circle', 'Square', 'Triangle', 'Star'] },
+      { img: 'images/square.png', answer: 'Square', options: ['Triangle', 'Circle', 'Square', 'Heart'] },
+      { img: 'images/triangle.png', answer: 'Triangle', options: ['Rectangle', 'Triangle', 'Diamond', 'Oval'] },
+      { img: 'images/star.png', answer: 'Star', options: ['Star', 'Heart', 'Hexagon', 'Moon'] },
+
+      { img: 'images/moon.jpg', answer: 'Moon', options: ['Moon', 'Square', 'Triangle', 'Star'] },
+      { img: 'images/diamond.jpg', answer: 'Diamond', options: ['Circle', 'Diamond', 'Triangle', 'Star'] },
+      { img: 'images/heart.jpg', answer: 'Heart', options: ['Circle', 'Square', 'Heart', 'Star'] },
+      { img: 'images/hexagon.jpg', answer: 'Hexagon', options: ['Circle', 'Hexagon', 'Triangle', 'Star'] }
+
+    ];
+
+
+    function loadShape() {
+      const random = shapeData[Math.floor(Math.random() * shapeData.length)];
+      document.getElementById('shapeImg').src = random.img;
+      const optContainer = document.getElementById('shapeOptions');
+      const result = document.getElementById('shapeResult');
+      result.textContent = '';
+      optContainer.innerHTML = '';
+      random.options.sort(() => Math.random() - 0.5).forEach(opt => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.textContent = opt;
+        btn.onclick = () => {
+          if (opt === random.answer) {
+            btn.classList.add('correct');
+            result.textContent = ' Right!';
+          } else {
+            result.textContent = ` Not correct! Correct answer is ${random.answer}`;
+          }
+        };
+        optContainer.appendChild(btn);
+      });
+    }
+    window.onload = loadShape;
+  </script>
+</body>
+</html>
